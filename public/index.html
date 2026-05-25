@@ -1,159 +1,376 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Food Delivery App</title>
 
-  <link rel="stylesheet" href="style.css"/>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- Google Font -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>Food Delivery App</title>
+
+    <!-- CSS FILE -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- GOOGLE FONT -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
 </head>
 
 <body>
 
-  <div class="container">
+    <div class="mobile-app">
 
-    <!-- ========== 1. SIGN IN SCREEN ========== -->
-    <section class="screen sign-in">
+        <!-- ================= SPLASH SCREEN ================= -->
 
-      <div class="overlay"></div>
+        <section id="splash-screen" class="screen active">
 
-      <div class="content">
-        <h1>FoodieHub</h1>
-        <p>Order your favorite food anytime anywhere</p>
+            <div class="splash-content">
 
-        <form>
-          <input type="email" placeholder="Email Address">
-          <input type="password" placeholder="Password">
+                <div class="logo-circle">
 
-          <button type="submit">Sign In</button>
-        </form>
+                    🍔
 
-        <span>Don't have an account? Sign Up</span>
-      </div>
-    </section>
+                </div>
 
+                <h1>FoodieHub</h1>
 
-    <!-- ========== 2. FOOD CATEGORY SCREEN ========== -->
-    <section class="screen categories">
+                <p>Fastest Food Delivery</p>
 
-      <div class="top-bar">
-        <h2>Categories</h2>
-        <input type="text" placeholder="Search food...">
-      </div>
+                <div class="loader"></div>
 
-      <div class="category-list">
-
-        <div class="card active">
-          <img src="https://cdn-icons-png.flaticon.com/512/5787/5787016.png">
-          <p>Burger</p>
-        </div>
-
-        <div class="card">
-          <img src="https://cdn-icons-png.flaticon.com/512/3075/3075977.png">
-          <p>Pizza</p>
-        </div>
-
-        <div class="card">
-          <img src="https://cdn-icons-png.flaticon.com/512/3480/3480823.png">
-          <p>Noodles</p>
-        </div>
-
-        <div class="card">
-          <img src="https://cdn-icons-png.flaticon.com/512/2515/2515183.png">
-          <p>Drinks</p>
-        </div>
-
-      </div>
-
-
-      <div class="food-items">
-
-        <div class="food-card">
-          <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=800&auto=format&fit=crop">
-          <h3>Cheese Burger</h3>
-          <span>$12.99</span>
-        </div>
-
-        <div class="food-card">
-          <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=800&auto=format&fit=crop">
-          <h3>Italian Pizza</h3>
-          <span>$18.50</span>
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- ========== 3. ORDER DETAILS SCREEN ========== -->
-    <section class="screen order-details">
-
-      <h2>Order Details</h2>
-
-      <div class="order-card">
-
-        <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?q=80&w=800&auto=format&fit=crop">
-
-        <div class="details">
-          <h3>Chicken Pizza</h3>
-          <p>Large Size • Extra Cheese</p>
-
-          <div class="price-row">
-            <span>$24.99</span>
-
-            <div class="quantity">
-              <button>-</button>
-              <span>1</span>
-              <button>+</button>
             </div>
-          </div>
+
+        </section>
+
+        <!-- ================= LOGIN SCREEN ================= -->
+
+        <section id="login-screen" class="screen">
+
+            <div class="login-bg"></div>
+
+            <div class="content">
+
+                <h1>FoodieHub</h1>
+
+                <p>Login to continue</p>
+
+                <input type="email" id="login-email" placeholder="Enter Email">
+
+                <div class="password-box">
+
+                    <input type="password" id="login-password" placeholder="Enter Password">
+
+                    <span onclick="togglePassword('login-password')">
+                        👁
+                    </span>
+
+                </div>
+
+                <p id="login-error" class="error-text"></p>
+
+                <button onclick="loginUser()">
+
+                    Sign In
+
+                </button>
+
+                <div class="switch-auth">
+
+                    Don't have account?
+
+                    <span onclick="openSignup()">
+
+                        Sign Up
+
+                    </span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- ================= SIGNUP SCREEN ================= -->
+
+        <section id="signup-screen" class="screen">
+
+            <div class="login-bg"></div>
+
+            <div class="content">
+
+                <h1>Create Account</h1>
+
+                <p>Join FoodieHub</p>
+
+                <input type="text" id="signup-name" placeholder="Enter Name">
+
+                <input type="email" id="signup-email" placeholder="Enter Email">
+
+                <div class="password-box">
+
+                    <input type="password" id="signup-password" placeholder="Enter Password">
+
+                    <span onclick="togglePassword('signup-password')">
+                        👁
+                    </span>
+
+                </div>
+
+                <p id="signup-error" class="error-text"></p>
+
+                <button onclick="signupUser()">
+
+                    Create Account
+
+                </button>
+
+                <div class="switch-auth">
+
+                    Already have account?
+
+                    <span onclick="openLogin()">
+
+                        Login
+
+                    </span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ================= HOME SCREEN ================= -->
+
+        <section id="home-screen" class="screen">
+
+            <div class="header">
+
+                <h2>Food Menu</h2>
+
+                <!-- SEARCH -->
+
+                <input type="text" id="searchInput" placeholder="Search food..." onkeyup="searchFood()">
+
+            </div>
+
+
+            <!-- CATEGORIES -->
+
+            <div class="categories">
+
+                <button onclick="filterFood('all')">All</button>
+
+                <button onclick="filterFood('burger')">Burger</button>
+
+                <button onclick="filterFood('pizza')">Pizza</button>
+
+                <button onclick="filterFood('pasta')">Pasta</button>
+
+            </div>
+
+
+
+            <!-- FOOD ITEMS -->
+
+            <div id="food-container" class="food-container">
+
+                <!-- BURGER -->
+
+                <div class="food-card burger" data-name="Cheese Burger" onclick="openDetails(
+            'Cheese Burger',
+            '$12.99',
+            'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=1000&auto=format&fit=crop'
+            )">
+
+                    <img
+                        src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=1000&auto=format&fit=crop">
+
+                    <h3>Cheese Burger</h3>
+
+                    <p>$12.99</p>
+
+                </div>
+
+
+
+                <!-- PIZZA -->
+
+                <div class="food-card pizza" data-name="Italian Pizza" onclick="openDetails(
+            'Italian Pizza',
+            '$18.50',
+            'https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=1000&auto=format&fit=crop'
+            )">
+
+                    <img
+                        src="https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=1000&auto=format&fit=crop">
+
+                    <h3>Italian Pizza</h3>
+
+                    <p>$18.50</p>
+
+                </div>
+
+
+
+                <!-- PASTA -->
+
+                <div class="food-card pasta" data-name="Italian Pasta" onclick="openDetails(
+            'Italian Pasta',
+            '$14.20',
+            'https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?q=80&w=1000&auto=format&fit=crop'
+            )">
+
+                    <img
+                        src="https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?q=80&w=1000&auto=format&fit=crop">
+
+                    <h3>Italian Pasta</h3>
+
+                    <p>$14.20</p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ================= DETAILS SCREEN ================= -->
+
+        <section id="details-screen" class="screen">
+
+            <button class="back-btn" onclick="goHome()">←</button>
+
+            <div class="details-image">
+
+                <img id="foodImage" src="">
+
+            </div>
+
+            <div class="details-content">
+
+                <h2 id="foodName"></h2>
+
+                <span id="foodPrice"></span>
+
+                <p>
+                    Fresh and delicious food prepared with premium ingredients.
+                </p>
+
+                <div class="quantity-box">
+
+                    <button onclick="decrease()">-</button>
+
+                    <span id="quantity">1</span>
+
+                    <button onclick="increase()">+</button>
+
+                </div>
+
+                <button class="order-btn" onclick="addToCart()">
+                    Add To Cart
+                </button>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ================= CART SCREEN ================= -->
+
+        <section id="cart-screen" class="screen">
+
+            <div class="header">
+
+                <h2>Your Cart</h2>
+
+            </div>
+
+            <div id="cart-container" class="cart-container">
+
+                <!-- ITEMS WILL COME FROM JAVASCRIPT -->
+
+            </div>
+
+            <div class="cart-total">
+
+                <h3>Total:</h3>
+
+                <span id="total-price">$0</span>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ================= PROFILE SCREEN ================= -->
+
+        <section id="profile-screen" class="screen">
+
+            <div class="profile-box">
+
+                <div class="profile-image">
+
+                    👤
+
+                </div>
+
+                <h2>Aryan Singh</h2>
+
+                <p>Frontend Developer</p>
+
+                <button>Edit Profile</button>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ================= SUCCESS SCREEN ================= -->
+
+        <section id="success-screen" class="screen">
+
+            <div class="success-box">
+
+                <div class="check">✓</div>
+
+                <h2>Order Successful</h2>
+
+                <p>Your order is on the way</p>
+
+                <button onclick="goHome()">Back To Home</button>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ================= BOTTOM NAVIGATION ================= -->
+
+        <div class="bottom-nav">
+
+            <button onclick="goHome()">🏠</button>
+
+            <button onclick="openCart()">🛒</button>
+
+            <button onclick="openProfile()">👤</button>
+
         </div>
-      </div>
+
+    </div>
 
 
-      <div class="bill">
-
-        <div class="bill-row">
-          <p>Subtotal</p>
-          <span>$24.99</span>
-        </div>
-
-        <div class="bill-row">
-          <p>Delivery</p>
-          <span>$3.00</span>
-        </div>
-
-        <div class="bill-row total">
-          <p>Total</p>
-          <span>$27.99</span>
-        </div>
-
-      </div>
-
-      <button class="checkout-btn">Place Order</button>
-
-    </section>
-
-
-    <!-- ========== 4. PAYMENT SUCCESS SCREEN ========== -->
-    <section class="screen success">
-
-      <div class="success-box">
-        <div class="check">✓</div>
-
-        <h2>Order Successful</h2>
-
-        <p>Your food is on the way!</p>
-
-        <button>Track Order</button>
-      </div>
-
-    </section>
-
-  </div>
+    <!-- JAVASCRIPT FILE -->
+    <script src="script.js"></script>
 
 </body>
+
 </html>
