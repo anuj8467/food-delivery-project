@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Food Delivery App</title>
+
+  <link rel="stylesheet" href="style.css"/>
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+  <div class="container">
+
+    <!-- ========== 1. SIGN IN SCREEN ========== -->
+    <section class="screen sign-in">
+
+      <div class="overlay"></div>
+
+      <div class="content">
+        <h1>FoodieHub</h1>
+        <p>Order your favorite food anytime anywhere</p>
+
+        <form>
+          <input type="email" placeholder="Email Address">
+          <input type="password" placeholder="Password">
+
+          <button type="submit">Sign In</button>
+        </form>
+
+        <span>Don't have an account? Sign Up</span>
+      </div>
+    </section>
+
+
+    <!-- ========== 2. FOOD CATEGORY SCREEN ========== -->
+    <section class="screen categories">
+
+      <div class="top-bar">
+        <h2>Categories</h2>
+        <input type="text" placeholder="Search food...">
+      </div>
+
+      <div class="category-list">
+
+        <div class="card active">
+          <img src="https://cdn-icons-png.flaticon.com/512/5787/5787016.png">
+          <p>Burger</p>
+        </div>
+
+        <div class="card">
+          <img src="https://cdn-icons-png.flaticon.com/512/3075/3075977.png">
+          <p>Pizza</p>
+        </div>
+
+        <div class="card">
+          <img src="https://cdn-icons-png.flaticon.com/512/3480/3480823.png">
+          <p>Noodles</p>
+        </div>
+
+        <div class="card">
+          <img src="https://cdn-icons-png.flaticon.com/512/2515/2515183.png">
+          <p>Drinks</p>
+        </div>
+
+      </div>
+
+
+      <div class="food-items">
+
+        <div class="food-card">
+          <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=800&auto=format&fit=crop">
+          <h3>Cheese Burger</h3>
+          <span>$12.99</span>
+        </div>
+
+        <div class="food-card">
+          <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=800&auto=format&fit=crop">
+          <h3>Italian Pizza</h3>
+          <span>$18.50</span>
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ========== 3. ORDER DETAILS SCREEN ========== -->
+    <section class="screen order-details">
+
+      <h2>Order Details</h2>
+
+      <div class="order-card">
+
+        <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?q=80&w=800&auto=format&fit=crop">
+
+        <div class="details">
+          <h3>Chicken Pizza</h3>
+          <p>Large Size • Extra Cheese</p>
+
+          <div class="price-row">
+            <span>$24.99</span>
+
+            <div class="quantity">
+              <button>-</button>
+              <span>1</span>
+              <button>+</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="bill">
+
+        <div class="bill-row">
+          <p>Subtotal</p>
+          <span>$24.99</span>
+        </div>
+
+        <div class="bill-row">
+          <p>Delivery</p>
+          <span>$3.00</span>
+        </div>
+
+        <div class="bill-row total">
+          <p>Total</p>
+          <span>$27.99</span>
+        </div>
+
+      </div>
+
+      <button class="checkout-btn">Place Order</button>
+
+    </section>
+
+
+    <!-- ========== 4. PAYMENT SUCCESS SCREEN ========== -->
+    <section class="screen success">
+
+      <div class="success-box">
+        <div class="check">✓</div>
+
+        <h2>Order Successful</h2>
+
+        <p>Your food is on the way!</p>
+
+        <button>Track Order</button>
+      </div>
+
+    </section>
+
+  </div>
+
+</body>
+</html>
