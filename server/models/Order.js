@@ -2,10 +2,15 @@ const mongoose = require("mongoose");
 
 const orderSchema = new mongoose.Schema({
 
-    userId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User"
-    },
+    userId: String,
+
+    userName: String,
+
+    userEmail: String,
+
+    phone: String,
+
+    address: String,
 
     items: Array,
 
@@ -20,7 +25,6 @@ const orderSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     }
-
 });
 
 module.exports =

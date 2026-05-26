@@ -5,19 +5,36 @@ const router = express.Router();
 
 /* GET ALL FOODS */
 
-router.get("/", async(req,res)=>{
+router.get("/", async (req, res) => {
 
-    try{
+    try {
 
         const foods =
-        await Food.find();
+            await Food.find();
 
         res.json(foods);
 
-    }catch(err){
+    } catch (err) {
 
         res.status(500).json({
-            message:"Server Error"
+            message: "Server Error"
+        });
+    }
+});
+
+router.get("/categories", async (req, res) => {
+
+    try {
+
+        const categories =
+            await Food.distinct("category");
+
+        res.json(categories);
+
+    } catch (err) {
+
+        res.status(500).json({
+            message: "Server Error"
         });
     }
 });

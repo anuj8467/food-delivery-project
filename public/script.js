@@ -104,6 +104,10 @@ function openProfile() {
 
     document.getElementById("profile-screen")
         .classList.add("active");
+
+    loadProfile();
+    loadOrderCount();
+    loadOrderHistory();
 }
 
 
@@ -283,6 +287,19 @@ function decreaseQty(index) {
 
 async function placeOrder() {
 
+    const phone =
+        document.getElementById("customer-phone").value;
+
+    const address =
+        document.getElementById("customer-address").value;
+
+    if (!phone || !address) {
+
+        alert("Please enter phone number and address");
+
+        return;
+    }
+
     if (cart.length === 0) {
 
         alert("Cart is Empty");
@@ -295,28 +312,33 @@ async function placeOrder() {
             localStorage.getItem("user")
         );
 
-    const order = {
+    const orderData = {
 
         userId: user.id,
+
+        userName: user.name,
+
+        userEmail: user.email,
+
+        phone: phone,
+
+        address: address,
 
         items: cart,
 
         totalPrice: cart.reduce(
-
-            (sum, item) =>
-
-                sum + item.price * item.quantity,
-
+            (total, item) =>
+                total + (item.price * item.quantity),
             0
         )
     };
 
     try {
 
+        /* SAVE ORDER */
+
         const response = await fetch(
-
             "http://localhost:5000/api/order/place",
-
             {
                 method: "POST",
 
@@ -324,23 +346,46 @@ async function placeOrder() {
                     "Content-Type": "application/json"
                 },
 
-                body: JSON.stringify(order)
+                body: JSON.stringify(orderData)
             }
         );
 
         const data = await response.json();
 
-        alert(data.message);
+        console.log("Order Response:", data);
+
+        /* CLEAR CART FROM MONGODB */
+
+        const clearResponse = await fetch(
+            `http://localhost:5000/api/cart/clear/${user.id}`,
+            {
+                method: "DELETE"
+            }
+        );
+
+        const clearData =
+            await clearResponse.json();
+
+        console.log(
+            "Cart Clear Response:",
+            clearData
+        );
+
+        /* CLEAR LOCAL CART */
 
         cart = [];
 
+        renderCart();
+
+        alert("Order Placed Successfully");
+
         hideAll();
 
-        document.getElementById("success-screen")
+        document
+            .getElementById("success-screen")
             .classList.add("active");
 
-    }
-    catch (err) {
+    } catch (err) {
 
         console.error(err);
 
@@ -655,26 +700,28 @@ async function removeFromCart(cartId) {
     }
 }
 
-async function loadFoods(){
+async function loadFoods() {
 
-    try{
+    try {
 
         const response =
-        await fetch(
-            "http://localhost:5000/api/foods"
-        );
+            await fetch(
+                "http://localhost:5000/api/foods"
+            );
 
         const foods =
-        await response.json();
+            await response.json();
+
+        loadCategories();
 
         const container =
-        document.getElementById(
-            "food-container"
-        );
+            document.getElementById(
+                "food-container"
+            );
 
         container.innerHTML = "";
 
-        foods.forEach(food=>{
+        foods.forEach(food => {
 
             container.innerHTML += `
 
@@ -699,11 +746,56 @@ async function loadFoods(){
             `;
         });
 
-    }catch(err){
+    } catch (err) {
 
         console.error(err);
     }
 }
+
+async function loadCategories() {
+
+    try {
+
+        const response =
+            await fetch(
+                "http://localhost:5000/api/foods/categories"
+            );
+
+        const categories =
+            await response.json();
+
+        const container =
+            document.getElementById(
+                "category-container"
+            );
+
+        container.innerHTML = "";
+
+        container.innerHTML += `
+            <button onclick="filterFood('all')">
+                All
+            </button>
+        `;
+
+        categories.forEach(category => {
+
+            container.innerHTML += `
+                <button
+                onclick="filterFood('${category.toLowerCase()}')">
+
+                    ${category}
+
+                </button>
+            `;
+        });
+
+    } catch (err) {
+
+        console.error(err);
+    }
+}
+
+loadCategories();
 
 window.onload = () => {
 
@@ -728,3 +820,165 @@ window.onload = () => {
     }, 3000);
 
 };
+
+
+
+async function loadProfile() {
+
+    const user =
+        JSON.parse(
+            localStorage.getItem("user")
+        );
+
+    try {
+
+        const response =
+            await fetch(
+                `http://localhost:5000/api/auth/profile/${user.id}`
+            );
+
+        const profile =
+            await response.json();
+
+        document.getElementById(
+            "profile-name"
+        ).innerText = profile.name;
+
+        document.getElementById(
+            "profile-email"
+        ).innerText = profile.email;
+
+    } catch (err) {
+
+        console.error(err);
+    }
+}
+
+async function loadOrderCount() {
+
+    const user =
+        JSON.parse(
+            localStorage.getItem("user")
+        );
+
+    try {
+
+        const response =
+            await fetch(
+                `http://localhost:5000/api/order/${user.id}`
+            );
+
+        const orders =
+            await response.json();
+
+        document.getElementById("order-count")
+            .innerText = orders.length;
+
+    } catch (err) {
+
+        console.error(err);
+    }
+}
+
+
+async function loadOrderHistory() {
+
+    const user =
+        JSON.parse(
+            localStorage.getItem("user")
+        );
+
+    try {
+
+        const response =
+            await fetch(
+                `http://localhost:5000/api/order/${user.id}`
+            );
+
+        const orders =
+            await response.json();
+
+        const container =
+            document.getElementById(
+                "history-container"
+            );
+
+        container.innerHTML = "";
+
+        if (orders.length === 0) {
+
+            container.innerHTML =
+                "<p style='color:white'>No Orders Yet</p>";
+
+            return;
+        }
+
+        orders.reverse().forEach(order => {
+
+            let foods = "";
+
+            order.items.forEach(item => {
+
+                foods += `
+                    <div class="food-line">
+                        🍔 ${item.foodName} × ${item.quantity}
+                    </div>
+                    `;
+            });
+
+            container.innerHTML += `
+
+            <div class="order-card">
+
+                <h4>
+                    Order #${order._id.slice(-5)}
+                </h4>
+
+                ${foods}
+
+                <p>
+                    Total: $${Number(order.totalPrice).toFixed(2)}
+                </p>
+
+                <p>
+                    Status:
+                    ${order.status}
+                </p>
+
+            </div>
+
+            `;
+        });
+
+    } catch (err) {
+
+        console.error(err);
+    }
+}
+
+function openOrderHistory() {
+
+    hideAll();
+
+    document.getElementById(
+        "history-screen"
+    ).classList.add("active");
+
+    loadOrderHistory();
+}
+
+function openCheckout() {
+
+    hideAll();
+
+    document.getElementById("checkout-screen")
+        .classList.add("active");
+
+    const user =
+        JSON.parse(localStorage.getItem("user"));
+
+    document.getElementById("customer-name").value =
+        user.name || "";
+
+    document.getElementById("customer-phone").value = "";
+}

@@ -160,15 +160,7 @@
 
             <!-- CATEGORIES -->
 
-            <div class="categories">
-
-                <button onclick="filterFood('all')">All</button>
-
-                <button onclick="filterFood('burger')">Burger</button>
-
-                <button onclick="filterFood('pizza')">Pizza</button>
-
-                <button onclick="filterFood('pasta')">Pasta</button>
+            <div id="category-container" class="categories">
 
             </div>
 
@@ -178,7 +170,7 @@
 
             <div id="food-container" class="food-container">
 
-             <!-- -------------------- --->
+                <!-- -------------------- --->
             </div>
 
         </section>
@@ -253,10 +245,39 @@
 
                 </div>
 
-                <button id="order-btn" onclick="placeOrder()">
-
+                <button id="order-btn" onclick="openCheckout()">
                     Order Now
+                </button>
 
+            </div>
+
+        </section>
+
+        <!-- ================= CHECKOUT SCREEN ================= -->
+
+        <section id="checkout-screen" class="screen">
+
+            <div class="checkout-header">
+
+                <button class="back-btn" onclick="openCart()">
+                    ←
+                </button>
+
+                <h2>Delivery Details</h2>
+
+            </div>
+
+            <div class="checkout-form">
+
+                <input type="text" id="customer-name" placeholder="Full Name">
+
+                <input type="text" id="customer-phone" placeholder="Phone Number">
+
+                <textarea id="customer-address" placeholder="Delivery Address">
+        </textarea>
+
+                <button onclick="placeOrder()">
+                    Place Order
                 </button>
 
             </div>
@@ -277,11 +298,44 @@
 
                 </div>
 
-                <h2>Aryan Singh</h2>
+                <h2 id="profile-name">Loading...</h2>
 
-                <p>Frontend Developer</p>
+                <p id="profile-email">
+                    Loading...
+                </p>
 
+                <p>
+                    Orders:
+                    <span id="order-count">0</span>
+                </p>
                 <button>Edit Profile</button>
+
+                <button class="history-btn" onclick="openOrderHistory()">
+
+                    Order History
+
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- ORDER HISTORY SCREEN -->
+
+        <section id="history-screen" class="screen">
+
+            <div class="history-header">
+
+                <button class="back-btn" onclick="openProfile()">
+                    ←
+                </button>
+
+                <h2>Order History</h2>
+
+            </div>
+
+            <div id="history-container">
 
             </div>
 

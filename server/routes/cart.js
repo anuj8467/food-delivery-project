@@ -40,6 +40,26 @@ router.get("/:userId", async (req, res) => {
     res.json(items);
 });
 
+router.delete("/clear/:userId", async (req, res) => {
+
+    try {
+
+        await Cart.deleteMany({
+            userId: req.params.userId
+        });
+
+        res.json({
+            message: "Cart Cleared"
+        });
+
+    } catch (err) {
+
+        res.status(500).json({
+            message: "Server Error"
+        });
+    }
+});
+
 router.delete("/:id", async (req, res) => {
 
     try {
@@ -57,5 +77,6 @@ router.delete("/:id", async (req, res) => {
         });
     }
 });
+
 
 module.exports = router;
