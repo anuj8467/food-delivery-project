@@ -3,7 +3,9 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 
 const authRoutes = require("./routes/auth");
-
+const cartRoutes = require("./routes/cart");
+const orderRoutes = require("./routes/order");
+const foodRoutes = require("./routes/food");
 const app = express();
 
 
@@ -19,6 +21,10 @@ app.use(express.json());
 /* ROUTES */
 
 app.use("/api/auth", authRoutes);
+app.use("/api/cart", cartRoutes);
+app.use("/api/order", orderRoutes);
+app.use("/api/foods", foodRoutes);
+
 
 
 
