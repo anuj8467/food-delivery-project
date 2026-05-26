@@ -4,7 +4,7 @@ let currentFood = {};
 
 let cart = [];
 
-
+let allOrders = [];
 
 function openHome() {
 
@@ -1053,7 +1053,24 @@ async function adminLogin() {
         .classList.add("active");
 }
 
+function clearAdminSections() {
+
+    document.getElementById("admin-orders")
+        .innerHTML = "";
+
+    document.getElementById("admin-users")
+        .innerHTML = "";
+
+    document.getElementById("admin-foods")
+        .innerHTML = "";
+
+    document.getElementById("food-form")
+        .style.display = "none";
+}
+
 async function loadAllOrders() {
+
+    clearAdminSections();
 
     try {
 
@@ -1063,59 +1080,9 @@ async function loadAllOrders() {
 
         const orders = await response.json();
 
-        const container =
-            document.getElementById(
-                "admin-orders"
-            );
+        allOrders = orders;
 
-        container.innerHTML = "";
-
-        orders.reverse().forEach(order => {
-
-            container.innerHTML += `
-
-            <div class="order-card">
-
-                    <h4>${order.userName}</h4>
-
-                    <p>${order.userEmail}</p>
-
-                    <p>📞 ${order.phone}</p>
-
-                    <p>📍 ${order.address}</p>
-
-                    <p>Total: ₹${order.totalPrice}</p>
-
-                    <p>Status: ${order.status}</p>
-
-                <select onchange="updateOrderStatus('${order._id}', this.value)">
-
-                    <option value="Pending"
-                        ${order.status === "Pending" ? "selected" : ""}>
-                        Pending
-                    </option>
-
-                    <option value="Preparing"
-                        ${order.status === "Preparing" ? "selected" : ""}>
-                        Preparing
-                    </option>
-
-                    <option value="Out For Delivery"
-                        ${order.status === "Out For Delivery" ? "selected" : ""}>
-                        Out For Delivery
-                    </option>
-
-                    <option value="Delivered"
-                        ${order.status === "Delivered" ? "selected" : ""}>
-                        Delivered
-                    </option>
-
-                </select>
-
-            </div>
-
-            `;
-        });
+        renderOrders(allOrders);
 
     } catch (err) {
 
@@ -1123,32 +1090,20 @@ async function loadAllOrders() {
     }
 }
 
-async function updateOrderStatus(orderId, status) {
-
-    const response = await fetch(
-        `http://localhost:5000/api/admin/order/${orderId}`,
-        {
-            method: "PUT",
-
-            headers: {
-                "Content-Type": "application/json"
-            },
-
-            body: JSON.stringify({
-                status
-            })
-        }
-    );
-
-    const data = await response.json();
-
-    alert(data.message);
-
-    loadAllOrders();
-}
-
 
 async function loadAllUsers() {
+
+     clearAdminSections();
+
+    const container =
+        document.getElementById("admin-users");
+
+    if (container.innerHTML.trim() !== "") {
+
+        container.innerHTML = "";
+
+        return;
+    }
 
     try {
 
@@ -1157,11 +1112,6 @@ async function loadAllUsers() {
         );
 
         const users = await response.json();
-
-        const container =
-            document.getElementById("admin-users");
-
-        container.innerHTML = "";
 
         users.forEach(user => {
 
@@ -1186,13 +1136,19 @@ async function loadAllUsers() {
 
 function toggleFoodForm() {
 
+     clearAdminSections();
+
     const form =
         document.getElementById("food-form");
 
-    form.style.display =
-        form.style.display === "none"
-            ? "block"
-            : "none";
+    if (form.style.display === "block") {
+
+        form.style.display = "none";
+
+    } else {
+
+        form.style.display = "block";
+    }
 }
 
 async function addFood() {
@@ -1243,6 +1199,18 @@ async function addFood() {
 
 async function loadAdminFoods() {
 
+     clearAdminSections();
+
+    const container =
+        document.getElementById("admin-foods");
+
+    if (container.innerHTML.trim() !== "") {
+
+        container.innerHTML = "";
+
+        return;
+    }
+
     const response =
         await fetch(
             "http://localhost:5000/api/foods"
@@ -1250,13 +1218,6 @@ async function loadAdminFoods() {
 
     const foods =
         await response.json();
-
-    const container =
-        document.getElementById(
-            "admin-foods"
-        );
-
-    container.innerHTML = "";
 
     foods.forEach(food => {
 
@@ -1298,4 +1259,131 @@ async function deleteFood(id) {
     );
 
     loadAdminFoods();
+}
+
+function renderOrders(orders) {
+
+    const container =
+        document.getElementById("admin-orders");
+
+    container.innerHTML = "";
+
+    orders.forEach(order => {
+
+        container.innerHTML += `
+
+        <div class="order-card">
+
+            <h4>${order.userName}</h4>
+
+            <p>${order.userEmail}</p>
+
+            <p>
+                ${order.items
+                .map(item => `${item.foodName} x${item.quantity}`)
+                .join(", ")}
+            </p>
+
+            <p>📞 ${order.phone}</p>
+
+            <p>📍 ${order.address}</p>
+
+            <p>Total: ₹${order.totalPrice}</p>
+
+            <p>Status: ${order.status}</p>
+
+            <select
+                onchange="updateOrderStatus('${order._id}', this.value)">
+
+                <option value="Pending"
+                    ${order.status === "Pending" ? "selected" : ""}>
+                    Pending
+                </option>
+
+                <option value="Preparing"
+                    ${order.status === "Preparing" ? "selected" : ""}>
+                    Preparing
+                </option>
+
+                <option value="Out For Delivery"
+                    ${order.status === "Out For Delivery" ? "selected" : ""}>
+                    Out For Delivery
+                </option>
+
+                <option value="Delivered"
+                    ${order.status === "Delivered" ? "selected" : ""}>
+                    Delivered
+                </option>
+
+            </select>
+
+        </div>
+
+        `;
+    });
+}
+
+function searchOrders() {
+
+    const search =
+        document.getElementById("order-search")
+        .value
+        .toLowerCase();
+
+    const filtered =
+        allOrders.filter(order =>
+
+            (order.userName || "")
+                .toLowerCase()
+                .includes(search)
+
+            ||
+
+            (order.userEmail || "")
+                .toLowerCase()
+                .includes(search)
+
+            ||
+
+            (order.phone || "")
+                .toString()
+                .includes(search)
+        );
+
+    renderOrders(filtered);
+}
+
+async function updateOrderStatus(orderId, status) {
+
+    try {
+
+        const response = await fetch(
+
+            `http://localhost:5000/api/admin/order/${orderId}`,
+
+            {
+                method: "PUT",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify({
+                    status
+                })
+            }
+        );
+
+        const data = await response.json();
+
+        alert(data.message);
+
+        loadAllOrders();
+
+    } catch (err) {
+
+        console.error(err);
+
+        alert("Failed to update status");
+    }
 }

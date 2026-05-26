@@ -994,3 +994,37 @@ body {
 
     overflow:hidden;
 }
+
+#order-search{
+
+    width:100%;
+
+    padding:12px;
+
+    border:none;
+
+    border-radius:10px;
+
+    margin-bottom:10px;
+
+    background:#3a2418;
+
+    color:white;
+}
+
+.order-card select{
+
+    width:100%;
+
+    margin-top:10px;
+
+    padding:10px;
+
+    border:none;
+
+    border-radius:8px;
+
+    background:#ff8c1a;
+
+    color:white;
+}
