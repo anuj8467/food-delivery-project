@@ -453,3 +453,150 @@ function togglePassword(id) {
         input.type = "password";
     }
 }
+
+/* ================= AUTH ================= */
+
+function openSignup(){
+
+    hideAll();
+
+    document.getElementById("signup-screen")
+    .classList.add("active");
+}
+
+
+function openLogin(){
+
+    hideAll();
+
+    document.getElementById("login-screen")
+    .classList.add("active");
+}
+
+
+
+/* LOGIN */
+
+function loginUser(){
+
+    let email =
+    document.getElementById("login-email").value;
+
+    let password =
+    document.getElementById("login-password").value;
+
+    let error =
+    document.getElementById("login-error");
+
+
+
+    if(email === "" || password === ""){
+
+        error.innerText =
+        "Please fill all fields";
+
+        return;
+    }
+
+
+
+    if(!email.includes("@")){
+
+        error.innerText =
+        "Invalid email";
+
+        return;
+    }
+
+
+
+    if(password.length < 6){
+
+        error.innerText =
+        "Password must be 6 characters";
+
+        return;
+    }
+
+
+
+    error.innerText = "";
+
+    openHome();
+}
+
+
+
+/* SIGNUP */
+
+function signupUser(){
+
+    let name =
+    document.getElementById("signup-name").value;
+
+    let email =
+    document.getElementById("signup-email").value;
+
+    let password =
+    document.getElementById("signup-password").value;
+
+    let error =
+    document.getElementById("signup-error");
+
+
+
+    if(name === "" || email === "" || password === ""){
+
+        error.innerText =
+        "Please fill all fields";
+
+        return;
+    }
+
+
+
+    if(!email.includes("@")){
+
+        error.innerText =
+        "Invalid email";
+
+        return;
+    }
+
+
+
+    if(password.length < 6){
+
+        error.innerText =
+        "Password must be 6 characters";
+
+        return;
+    }
+
+
+
+    error.innerText = "";
+
+    alert("Account Created Successfully");
+
+    openLogin();
+}
+
+
+
+/* SHOW/HIDE PASSWORD */
+
+function togglePassword(id){
+
+    let input =
+    document.getElementById(id);
+
+    if(input.type === "password"){
+
+        input.type = "text";
+
+    }else{
+
+        input.type = "password";
+    }
+}

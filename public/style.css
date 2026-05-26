@@ -446,11 +446,11 @@ body {
 
 /* ================= SPLASH SCREEN ================= */
 
-#splash-screen{
-    justify-content:center;
-    align-items:center;
-    background:#2a1b14;
-    z-index:100;
+#splash-screen {
+    justify-content: center;
+    align-items: center;
+    background: #2a1b14;
+    z-index: 100;
 }
 
 .splash-content {
@@ -515,53 +515,94 @@ body {
 #home-screen.active,
 #details-screen.active,
 #cart-screen.active,
-#success-screen.active{
-    display:block;
+#success-screen.active {
+    display: block;
 }
 
-#profile-screen.active{
-    display:flex;
-    justify-content:center;
-    align-items:center;
+#profile-screen.active {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 /* PASSWORD BOX */
 
-.password-box{
-    position:relative;
+.password-box {
+    position: relative;
 }
 
-.password-box input{
-    width:100%;
+.password-box input {
+    width: 100%;
 }
 
-.password-box span{
-    position:absolute;
-    right:15px;
-    top:50%;
-    transform:translateY(-50%);
-    cursor:pointer;
-    font-size:18px;
+.password-box span {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: 18px;
 }
 
 /* ERROR */
 
-.error-text{
-    color:#ff4d4d !important;
-    margin-bottom:15px !important;
-    font-size:14px;
+.error-text {
+    color: #ff4d4d !important;
+    margin-bottom: 15px !important;
+    font-size: 14px;
 }
 
 /* SWITCH AUTH */
 
-.switch-auth{
-    margin-top:20px;
-    color:#ddd;
-    text-align:center;
+.switch-auth {
+    margin-top: 20px;
+    color: #ddd;
+    text-align: center;
 }
 
-.switch-auth span{
-    color:#ff8c1a;
-    cursor:pointer;
-    font-weight:600;
+.switch-auth span {
+    color: #ff8c1a;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+/* PASSWORD BOX */
+
+.password-box {
+    position: relative;
+}
+
+.password-box input {
+    width: 100%;
+}
+
+.password-box span {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: 18px;
+}
+
+/* ERROR */
+
+.error-text {
+    color: #ff4d4d !important;
+    margin-bottom: 15px !important;
+    font-size: 14px;
+}
+
+/* SWITCH AUTH */
+
+.switch-auth {
+    margin-top: 20px;
+    color: #ddd;
+    text-align: center;
+}
+
+.switch-auth span {
+    color: #ff8c1a;
+    cursor: pointer;
+    font-weight: 600;
 }
