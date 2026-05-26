@@ -68,14 +68,32 @@ function goHome() {
 
 
 
-function openCart() {
+async function openCart() {
 
     hideAll();
 
     document.getElementById("cart-screen")
         .classList.add("active");
 
-    renderCart();
+    const user =
+        JSON.parse(localStorage.getItem("user"));
+
+    try {
+
+        const response = await fetch(
+            `http://localhost:5000/api/cart/${user.id}`
+        );
+
+        cart = await response.json();
+
+        renderCart();
+
+    } catch (err) {
+
+        console.error(err);
+
+        alert("Failed to load cart");
+    }
 }
 
 
@@ -115,24 +133,45 @@ function decrease() {
 
 /* ADD TO CART */
 
-function addToCart() {
+async function addToCart() {
 
-    let food = {
+    const user =
+        JSON.parse(
+            localStorage.getItem("user")
+        );
 
-        name: currentFood.name,
+    const cartItem = {
 
-        price: parseFloat(currentFood.price.replace("$", "")),
+        userId: user.id,
+
+        foodName: currentFood.name,
+
+        price: parseFloat(
+            currentFood.price.replace("$", "")
+        ),
 
         image: currentFood.image,
 
         quantity: count
     };
 
-    cart.push(food);
+    await fetch(
+        "http://localhost:5000/api/cart/add",
+        {
+            method: "POST",
+
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify(cartItem)
+        }
+    );
+
+    alert("Added To Cart");
 
     openCart();
 }
-
 
 
 /* RENDER CART */
@@ -146,7 +185,23 @@ function renderCart() {
 
     cartContainer.innerHTML = "";
 
+    if (cart.length === 0) {
 
+        cartContainer.innerHTML = `
+            <p style="
+                text-align:center;
+                color:white;
+                margin-top:50px;
+            ">
+                Your cart is empty
+            </p>
+        `;
+
+        document.getElementById("total-price")
+            .innerText = "$0.00";
+
+        return;
+    }
 
     cart.forEach((item, index) => {
 
@@ -156,23 +211,31 @@ function renderCart() {
 
         <div class="cart-item">
 
-            <img src="${item.image}">
+            <img src="${item.image}" alt="${item.foodName}">
 
             <div class="cart-details">
 
-                <h3>${item.name}</h3>
+                <h3>${item.foodName}</h3>
 
                 <p>$${item.price}</p>
 
                 <div class="qty-buttons">
 
-                    <button onclick="decreaseQty(${index})">-</button>
+                        <button onclick="decreaseQty(${index})">-</button>
 
-                    <span>${item.quantity}</span>
+                        <span>${item.quantity}</span>
 
-                    <button onclick="increaseQty(${index})">+</button>
+                        <button onclick="increaseQty(${index})">+</button>
 
                 </div>
+
+                <button
+                        class="remove-btn"
+                        onclick="removeFromCart('${item._id}')">
+
+                        Remove
+
+                </button>
 
             </div>
 
@@ -218,14 +281,71 @@ function decreaseQty(index) {
 
 /* SUCCESS */
 
-function placeOrder() {
+async function placeOrder() {
 
-    hideAll();
+    if (cart.length === 0) {
 
-    document.getElementById("success-screen")
-        .classList.add("active");
+        alert("Cart is Empty");
 
-    cart = [];
+        return;
+    }
+
+    const user =
+        JSON.parse(
+            localStorage.getItem("user")
+        );
+
+    const order = {
+
+        userId: user.id,
+
+        items: cart,
+
+        totalPrice: cart.reduce(
+
+            (sum, item) =>
+
+                sum + item.price * item.quantity,
+
+            0
+        )
+    };
+
+    try {
+
+        const response = await fetch(
+
+            "http://localhost:5000/api/order/place",
+
+            {
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify(order)
+            }
+        );
+
+        const data = await response.json();
+
+        alert(data.message);
+
+        cart = [];
+
+        hideAll();
+
+        document.getElementById("success-screen")
+            .classList.add("active");
+
+    }
+    catch (err) {
+
+        console.error(err);
+
+        alert("Order Failed");
+    }
 }
 
 /* FILTER FOOD */
@@ -421,7 +541,9 @@ async function loginUser() {
 
         alert("Login Successful");
 
+        loadFoods();
         openHome();
+
 
     }
     catch (err) {
@@ -511,3 +633,98 @@ function togglePassword(id) {
         input.type = "password";
     }
 }
+
+async function removeFromCart(cartId) {
+
+    try {
+
+        await fetch(
+            `http://localhost:5000/api/cart/${cartId}`,
+            {
+                method: "DELETE"
+            }
+        );
+
+        openCart();
+
+    } catch (err) {
+
+        console.error(err);
+
+        alert("Failed to remove item");
+    }
+}
+
+async function loadFoods(){
+
+    try{
+
+        const response =
+        await fetch(
+            "http://localhost:5000/api/foods"
+        );
+
+        const foods =
+        await response.json();
+
+        const container =
+        document.getElementById(
+            "food-container"
+        );
+
+        container.innerHTML = "";
+
+        foods.forEach(food=>{
+
+            container.innerHTML += `
+
+            <div class="food-card ${food.category.toLowerCase()}"
+
+            data-name="${food.name}"
+
+            onclick="openDetails(
+                '${food.name}',
+                '$${food.price}',
+                '${food.image}'
+            )">
+
+                <img src="${food.image}">
+
+                <h3>${food.name}</h3>
+
+                <p>$${food.price}</p>
+
+            </div>
+
+            `;
+        });
+
+    }catch(err){
+
+        console.error(err);
+    }
+}
+
+window.onload = () => {
+
+    setTimeout(() => {
+
+        document.getElementById("splash-screen")
+            .classList.remove("active");
+
+        const user = localStorage.getItem("user");
+
+        if (user) {
+
+            openHome();
+            loadFoods();
+
+        } else {
+
+            document.getElementById("login-screen")
+                .classList.add("active");
+        }
+
+    }, 3000);
+
+};

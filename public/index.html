@@ -178,61 +178,7 @@
 
             <div id="food-container" class="food-container">
 
-                <!-- BURGER -->
-
-                <div class="food-card burger" data-name="Cheese Burger" onclick="openDetails(
-            'Cheese Burger',
-            '$12.99',
-            'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=1000&auto=format&fit=crop'
-            )">
-
-                    <img
-                        src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=1000&auto=format&fit=crop">
-
-                    <h3>Cheese Burger</h3>
-
-                    <p>$12.99</p>
-
-                </div>
-
-
-
-                <!-- PIZZA -->
-
-                <div class="food-card pizza" data-name="Italian Pizza" onclick="openDetails(
-            'Italian Pizza',
-            '$18.50',
-            'https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=1000&auto=format&fit=crop'
-            )">
-
-                    <img
-                        src="https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=1000&auto=format&fit=crop">
-
-                    <h3>Italian Pizza</h3>
-
-                    <p>$18.50</p>
-
-                </div>
-
-
-
-                <!-- PASTA -->
-
-                <div class="food-card pasta" data-name="Italian Pasta" onclick="openDetails(
-            'Italian Pasta',
-            '$14.20',
-            'https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?q=80&w=1000&auto=format&fit=crop'
-            )">
-
-                    <img
-                        src="https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?q=80&w=1000&auto=format&fit=crop">
-
-                    <h3>Italian Pasta</h3>
-
-                    <p>$14.20</p>
-
-                </div>
-
+             <!-- -------------------- --->
             </div>
 
         </section>
@@ -297,11 +243,21 @@
 
             </div>
 
-            <div class="cart-total">
+            <div class="cart-footer">
 
-                <h3>Total:</h3>
+                <div class="cart-total">
 
-                <span id="total-price">$0</span>
+                    <h3>Total:</h3>
+
+                    <span id="total-price">$0</span>
+
+                </div>
+
+                <button id="order-btn" onclick="placeOrder()">
+
+                    Order Now
+
+                </button>
 
             </div>
 
