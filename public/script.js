@@ -327,116 +327,6 @@ function openLogin() {
 }
 
 
-
-/* LOGIN */
-
-function loginUser() {
-
-    let email =
-        document.getElementById("login-email").value;
-
-    let password =
-        document.getElementById("login-password").value;
-
-    let error =
-        document.getElementById("login-error");
-
-
-
-    if (email === "" || password === "") {
-
-        error.innerText =
-            "Please fill all fields";
-
-        return;
-    }
-
-
-
-    if (!email.includes("@")) {
-
-        error.innerText =
-            "Invalid email";
-
-        return;
-    }
-
-
-
-    if (password.length < 6) {
-
-        error.innerText =
-            "Password must be 6 characters";
-
-        return;
-    }
-
-
-
-    error.innerText = "";
-
-    openHome();
-}
-
-
-
-/* SIGNUP */
-
-function signupUser() {
-
-    let name =
-        document.getElementById("signup-name").value;
-
-    let email =
-        document.getElementById("signup-email").value;
-
-    let password =
-        document.getElementById("signup-password").value;
-
-    let error =
-        document.getElementById("signup-error");
-
-
-
-    if (name === "" || email === "" || password === "") {
-
-        error.innerText =
-            "Please fill all fields";
-
-        return;
-    }
-
-
-
-    if (!email.includes("@")) {
-
-        error.innerText =
-            "Invalid email";
-
-        return;
-    }
-
-
-
-    if (password.length < 6) {
-
-        error.innerText =
-            "Password must be 6 characters";
-
-        return;
-    }
-
-
-
-    error.innerText = "";
-
-    alert("Account Created Successfully");
-
-    openLogin();
-}
-
-
-
 /* SHOW/HIDE PASSWORD */
 
 function togglePassword(id) {
@@ -456,146 +346,167 @@ function togglePassword(id) {
 
 /* ================= AUTH ================= */
 
-function openSignup(){
+function openSignup() {
 
     hideAll();
 
     document.getElementById("signup-screen")
-    .classList.add("active");
+        .classList.add("active");
 }
 
 
-function openLogin(){
+function openLogin() {
 
     hideAll();
 
     document.getElementById("login-screen")
-    .classList.add("active");
+        .classList.add("active");
 }
 
 
 
 /* LOGIN */
 
-function loginUser(){
+async function loginUser() {
 
     let email =
-    document.getElementById("login-email").value;
+        document.getElementById("login-email").value;
 
     let password =
-    document.getElementById("login-password").value;
+        document.getElementById("login-password").value;
 
     let error =
-    document.getElementById("login-error");
+        document.getElementById("login-error");
 
+    try {
 
+        const response = await fetch(
+            "http://localhost:5000/api/auth/login",
+            {
+                method: "POST",
 
-    if(email === "" || password === ""){
+                headers: {
+                    "Content-Type": "application/json"
+                },
 
-        error.innerText =
-        "Please fill all fields";
+                body: JSON.stringify({
+                    email,
+                    password
+                })
+            }
+        );
 
-        return;
+        const data = await response.json();
+
+        if (!response.ok) {
+
+            error.innerText = data.message;
+
+            alert(data.message);
+
+            return;
+        }
+
+        localStorage.setItem(
+            "token",
+            data.token
+        );
+
+        localStorage.setItem(
+            "user",
+            JSON.stringify(data.user)
+        );
+
+        error.innerText = "";
+
+        alert("Login Successful");
+
+        openHome();
+
     }
+    catch (err) {
 
+        console.error(err);
 
+        error.innerText = "Server Error";
 
-    if(!email.includes("@")){
-
-        error.innerText =
-        "Invalid email";
-
-        return;
+        alert("Server Error");
     }
-
-
-
-    if(password.length < 6){
-
-        error.innerText =
-        "Password must be 6 characters";
-
-        return;
-    }
-
-
-
-    error.innerText = "";
-
-    openHome();
 }
-
 
 
 /* SIGNUP */
 
-function signupUser(){
+async function signupUser() {
 
-    let name =
-    document.getElementById("signup-name").value;
-
-    let email =
-    document.getElementById("signup-email").value;
-
-    let password =
-    document.getElementById("signup-password").value;
-
-    let error =
-    document.getElementById("signup-error");
+    //   alert("Signup button clicked");
 
 
+    let name = document.getElementById("signup-name").value;
+    let email = document.getElementById("signup-email").value;
+    let password = document.getElementById("signup-password").value;
 
-    if(name === "" || email === "" || password === ""){
+    let error = document.getElementById("signup-error");
 
-        error.innerText =
-        "Please fill all fields";
+    try {
 
-        return;
+        const response = await fetch(
+            "http://localhost:5000/api/auth/signup",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    name,
+                    email,
+                    password
+                })
+            }
+        );
+
+        const data = await response.json();
+
+        // console.log("Response:", data);
+
+        if (!response.ok) {
+
+            error.innerText = data.message;
+            return;
+        }
+
+        error.innerText = "";
+
+        alert("Account Created Successfully");
+
+        document.getElementById("signup-name").value = "";
+        document.getElementById("signup-email").value = "";
+        document.getElementById("signup-password").value = "";
+
+        openLogin();
+
+    } catch (err) {
+
+        console.error(err);
+
+        error.innerText = "Server Error";
     }
-
-
-
-    if(!email.includes("@")){
-
-        error.innerText =
-        "Invalid email";
-
-        return;
-    }
-
-
-
-    if(password.length < 6){
-
-        error.innerText =
-        "Password must be 6 characters";
-
-        return;
-    }
-
-
-
-    error.innerText = "";
-
-    alert("Account Created Successfully");
-
-    openLogin();
 }
 
 
 
 /* SHOW/HIDE PASSWORD */
 
-function togglePassword(id){
+function togglePassword(id) {
 
     let input =
-    document.getElementById(id);
+        document.getElementById(id);
 
-    if(input.type === "password"){
+    if (input.type === "password") {
 
         input.type = "text";
 
-    }else{
+    } else {
 
         input.type = "password";
     }
