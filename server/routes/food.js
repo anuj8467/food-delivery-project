@@ -39,4 +39,36 @@ router.get("/categories", async (req, res) => {
     }
 });
 
+router.post("/", async (req, res) => {
+
+    try {
+
+        const food =
+            new Food(req.body);
+
+        await food.save();
+
+        res.json({
+            message: "Food Added"
+        });
+
+    } catch (err) {
+
+        res.status(500).json({
+            message: "Server Error"
+        });
+    }
+});
+
+router.delete("/:id", async (req, res) => {
+
+    await Food.findByIdAndDelete(
+        req.params.id
+    );
+
+    res.json({
+        message: "Food Deleted"
+    });
+});
+
 module.exports = router;

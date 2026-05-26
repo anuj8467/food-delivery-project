@@ -391,15 +391,45 @@
                     View Orders
                 </button>
 
-                <button>
-                    Manage Orders
-                </button>
-
-                <button>
+                <button onclick="loadAllUsers()">
                     Manage Users
                 </button>
 
+                <button onclick="loadAdminFoods()">
+                    Manage Foods
+                </button>
+
+                <!-- ADD FOOD BUTTON -->
+
+                <button onclick="toggleFoodForm()">
+                    Add Food
+                </button>
+
+                <!-- FOOD FORM -->
+
+                <div id="food-form" style="display:none;">
+
+                    <input type="text" id="food-name" placeholder="Food Name">
+
+                    <input type="text" id="food-price" placeholder="Price">
+
+                    <input type="text" id="food-image" placeholder="Image URL">
+
+                    <input type="text" id="food-category" placeholder="Category">
+
+                    <button onclick="addFood()">
+                        Save Food
+                    </button>
+
+                </div>
+
+                <!-- RESULTS -->
+
+                <div id="admin-users"></div>
+
                 <div id="admin-orders"></div>
+
+                <div id="admin-foods"></div>
 
             </div>
 

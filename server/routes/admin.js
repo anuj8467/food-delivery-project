@@ -1,6 +1,7 @@
 const express = require("express");
 const Admin = require("../models/Admin");
 const Order = require("../models/Order");
+const User = require("../models/User");
 
 const router = express.Router();
 
@@ -47,6 +48,47 @@ router.get("/orders", async (req, res) => {
         const orders = await Order.find();
 
         res.json(orders);
+
+    } catch (err) {
+
+        res.status(500).json({
+            message: "Server Error"
+        });
+    }
+});
+
+router.put("/order/:id", async (req, res) => {
+
+    try {
+
+        await Order.findByIdAndUpdate(
+            req.params.id,
+            {
+                status: req.body.status
+            }
+        );
+
+        res.json({
+            message: "Order Status Updated"
+        });
+
+    } catch (err) {
+
+        res.status(500).json({
+            message: "Server Error"
+        });
+    }
+});
+
+router.get("/users", async (req, res) => {
+
+    try {
+
+        const users =
+            await User.find()
+            .select("-password");
+
+        res.json(users);
 
     } catch (err) {
 

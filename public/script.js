@@ -1022,7 +1022,7 @@ async function adminLogin() {
 
                 headers: {
                     "Content-Type":
-                    "application/json"
+                        "application/json"
                 },
 
                 body: JSON.stringify({
@@ -1076,31 +1076,41 @@ async function loadAllOrders() {
 
             <div class="order-card">
 
-                <h4>
-                    ${order.userName}
-                </h4>
+                    <h4>${order.userName}</h4>
 
-                <p>
-                    ${order.userEmail}
-                </p>
+                    <p>${order.userEmail}</p>
 
-                <p>
-                    📞 ${order.phone}
-                </p>
+                    <p>📞 ${order.phone}</p>
 
-                <p>
-                    📍 ${order.address}
-                </p>
+                    <p>📍 ${order.address}</p>
 
-                <p>
-                    Total:
-                    ₹${Number(order.totalPrice).toFixed(2)}
-                </p>
+                    <p>Total: ₹${order.totalPrice}</p>
 
-                <p>
-                    Status:
-                    ${order.status}
-                </p>
+                    <p>Status: ${order.status}</p>
+
+                <select onchange="updateOrderStatus('${order._id}', this.value)">
+
+                    <option value="Pending"
+                        ${order.status === "Pending" ? "selected" : ""}>
+                        Pending
+                    </option>
+
+                    <option value="Preparing"
+                        ${order.status === "Preparing" ? "selected" : ""}>
+                        Preparing
+                    </option>
+
+                    <option value="Out For Delivery"
+                        ${order.status === "Out For Delivery" ? "selected" : ""}>
+                        Out For Delivery
+                    </option>
+
+                    <option value="Delivered"
+                        ${order.status === "Delivered" ? "selected" : ""}>
+                        Delivered
+                    </option>
+
+                </select>
 
             </div>
 
@@ -1113,3 +1123,179 @@ async function loadAllOrders() {
     }
 }
 
+async function updateOrderStatus(orderId, status) {
+
+    const response = await fetch(
+        `http://localhost:5000/api/admin/order/${orderId}`,
+        {
+            method: "PUT",
+
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify({
+                status
+            })
+        }
+    );
+
+    const data = await response.json();
+
+    alert(data.message);
+
+    loadAllOrders();
+}
+
+
+async function loadAllUsers() {
+
+    try {
+
+        const response = await fetch(
+            "http://localhost:5000/api/admin/users"
+        );
+
+        const users = await response.json();
+
+        const container =
+            document.getElementById("admin-users");
+
+        container.innerHTML = "";
+
+        users.forEach(user => {
+
+            container.innerHTML += `
+
+            <div class="user-card">
+
+                <h4>${user.name}</h4>
+
+                <p>${user.email}</p>
+
+            </div>
+
+            `;
+        });
+
+    } catch (err) {
+
+        console.error(err);
+    }
+}
+
+function toggleFoodForm() {
+
+    const form =
+        document.getElementById("food-form");
+
+    form.style.display =
+        form.style.display === "none"
+            ? "block"
+            : "none";
+}
+
+async function addFood() {
+
+    const foodData = {
+
+        name:
+            document.getElementById(
+                "food-name"
+            ).value,
+
+        price:
+            document.getElementById(
+                "food-price"
+            ).value,
+
+        image:
+            document.getElementById(
+                "food-image"
+            ).value,
+
+        category:
+            document.getElementById(
+                "food-category"
+            ).value
+    };
+
+    const response = await fetch(
+        "http://localhost:5000/api/foods",
+        {
+            method: "POST",
+
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify(foodData)
+        }
+    );
+
+    const data =
+        await response.json();
+
+    alert(data.message);
+
+    loadFoods();
+}
+
+async function loadAdminFoods() {
+
+    const response =
+        await fetch(
+            "http://localhost:5000/api/foods"
+        );
+
+    const foods =
+        await response.json();
+
+    const container =
+        document.getElementById(
+            "admin-foods"
+        );
+
+    container.innerHTML = "";
+
+    foods.forEach(food => {
+
+        container.innerHTML += `
+
+        <div class="food-card-admin">
+
+            <img src="${food.image}">
+
+            <h4>${food.name}</h4>
+
+            <p>₹${food.price}</p>
+
+            <button
+                onclick="deleteFood('${food._id}')">
+
+                Delete
+
+            </button>
+
+        </div>
+
+        `;
+    });
+}
+
+async function deleteFood(id) {
+
+    if (!confirm("Delete Food?"))
+        return;
+
+    await fetch(
+
+        `http://localhost:5000/api/foods/${id}`,
+
+        {
+            method: "DELETE"
+        }
+    );
+
+    loadAdminFoods();
+}
