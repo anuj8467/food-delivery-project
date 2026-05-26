@@ -982,3 +982,134 @@ function openCheckout() {
 
     document.getElementById("customer-phone").value = "";
 }
+
+function openAdmin() {
+
+    hideAll();
+
+    document
+        .getElementById("admin-screen")
+        .classList.add("active");
+}
+
+function openAdminLogin() {
+
+    hideAll();
+
+    document
+        .getElementById("admin-login-screen")
+        .classList.add("active");
+}
+
+
+async function adminLogin() {
+
+    const email =
+        document.getElementById(
+            "admin-email"
+        ).value;
+
+    const password =
+        document.getElementById(
+            "admin-password"
+        ).value;
+
+    const response =
+        await fetch(
+            "http://localhost:5000/api/admin/login",
+            {
+                method: "POST",
+
+                headers: {
+                    "Content-Type":
+                    "application/json"
+                },
+
+                body: JSON.stringify({
+                    email,
+                    password
+                })
+            }
+        );
+
+    const data =
+        await response.json();
+
+    if (!response.ok) {
+
+        alert(data.message);
+
+        return;
+    }
+
+    alert(
+        "Welcome Admin"
+    );
+
+    hideAll();
+
+    document
+        .getElementById("admin-screen")
+        .classList.add("active");
+}
+
+async function loadAllOrders() {
+
+    try {
+
+        const response = await fetch(
+            "http://localhost:5000/api/admin/orders"
+        );
+
+        const orders = await response.json();
+
+        const container =
+            document.getElementById(
+                "admin-orders"
+            );
+
+        container.innerHTML = "";
+
+        orders.reverse().forEach(order => {
+
+            container.innerHTML += `
+
+            <div class="order-card">
+
+                <h4>
+                    ${order.userName}
+                </h4>
+
+                <p>
+                    ${order.userEmail}
+                </p>
+
+                <p>
+                    📞 ${order.phone}
+                </p>
+
+                <p>
+                    📍 ${order.address}
+                </p>
+
+                <p>
+                    Total:
+                    ₹${Number(order.totalPrice).toFixed(2)}
+                </p>
+
+                <p>
+                    Status:
+                    ${order.status}
+                </p>
+
+            </div>
+
+            `;
+        });
+
+    } catch (err) {
+
+        console.error(err);
+    }
+}
+

@@ -254,36 +254,11 @@ body {
     cursor: pointer;
 }
 
-/* BACK BUTTON */
-
-.back-btn {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    width: 45px;
-    height: 45px;
-    border: none;
-    border-radius: 50%;
-    background: #ff8c1a;
-    color: white;
-    font-size: 22px;
-    z-index: 10;
-    cursor: pointer;
-}
 
 /* CART */
 
 .cart-container {
     padding: 20px;
-}
-
-.cart-item {
-    background: #3a271f;
-    padding: 15px;
-    border-radius: 20px;
-    display: flex;
-    gap: 15px;
-    align-items: center;
 }
 
 .cart-item img {
@@ -345,20 +320,6 @@ body {
 }
 
 /* CART TOTAL */
-
-.cart-total {
-    position: absolute;
-    bottom: 90px;
-    width: 100%;
-    padding: 20px;
-    background: #2f1f17;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    color: white;
-    font-size: 22px;
-    font-weight: 600;
-}
 
 .cart-item {
     background: #3a271f;
@@ -523,16 +484,6 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-}
-
-/* PASSWORD BOX */
-
-.password-box {
-    position: relative;
-}
-
-.password-box input {
-    width: 100%;
 }
 
 .password-box span {
@@ -859,4 +810,125 @@ body {
     background:#ff8c1a;
     color:white;
     cursor:pointer;
+}
+
+.admin-btn{
+    position:absolute;
+    top:20px;
+    left:20px;
+    padding:10px 15px;
+    border:none;
+    border-radius:10px;
+    background:#ff8c1a;
+    color:white;
+    cursor:pointer;
+    z-index:10;
+}
+
+
+
+#admin-orders{
+
+    margin-top:20px;
+
+    overflow-y:auto;
+
+    max-height:500px;
+}
+
+
+.order-card{
+
+    width:100%;
+
+    padding:15px;
+
+    background:#3a2418;
+
+    border-radius:12px;
+
+    box-sizing:border-box;
+
+    color:white;
+
+    margin-bottom:12px;
+}
+
+.order-card h4{
+
+    margin-bottom:8px;
+}
+
+.order-card p{
+
+    margin:4px 0;
+
+    word-break:break-word;
+}
+
+
+
+/* ================= ADMIN DASHBOARD ================= */
+
+#admin-screen.active{
+    display:block;
+    padding:20px;
+}
+
+.admin-header{
+    display:flex;
+    align-items:center;
+    gap:15px;
+    margin-bottom:20px;
+}
+
+.admin-header .back-btn{
+    position:static;
+    width:45px;
+    height:45px;
+    border:none;
+    border-radius:50%;
+    background:#ff8c1a;
+    color:white;
+    font-size:22px;
+    cursor:pointer;
+    flex-shrink:0;
+}
+
+.admin-header h2{
+    margin:0;
+    color:white;
+    font-size:30px;
+    line-height:1.2;
+}
+
+.admin-content{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+}
+
+.admin-content button{
+    width:100%;
+    padding:15px;
+    border:none;
+    border-radius:12px;
+    background:#ff8c1a;
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+}
+
+#admin-orders{
+    margin-top:15px;
+    overflow-y:auto;
+    max-height:350px;
+}
+
+.order-card{
+    background:#3a2418;
+    padding:15px;
+    border-radius:12px;
+    margin-bottom:12px;
+    color:white;
 }
