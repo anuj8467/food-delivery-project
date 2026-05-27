@@ -298,7 +298,7 @@ function decreaseQty(index) {
 
 /* SUCCESS */
 
-async function placeOrder() {
+async function placeOrder(paymentId) {
 
     const phone =
         document.getElementById("customer-phone").value;
@@ -343,7 +343,11 @@ async function placeOrder() {
             (total, item) =>
                 total + (item.price * item.quantity),
             0
-        )
+        ),
+
+        paymentId: paymentId,
+
+        paymentStatus: "Paid"
     };
 
     try {
@@ -1106,7 +1110,7 @@ async function loadAllOrders() {
 
 async function loadAllUsers() {
 
-     clearAdminSections();
+    clearAdminSections();
 
     const container =
         document.getElementById("admin-users");
@@ -1149,7 +1153,7 @@ async function loadAllUsers() {
 
 function toggleFoodForm() {
 
-     clearAdminSections();
+    clearAdminSections();
 
     const form =
         document.getElementById("food-form");
@@ -1212,7 +1216,7 @@ async function addFood() {
 
 async function loadAdminFoods() {
 
-     clearAdminSections();
+    clearAdminSections();
 
     const container =
         document.getElementById("admin-foods");
@@ -1305,6 +1309,10 @@ function renderOrders(orders) {
 
             <p>Status: ${order.status}</p>
 
+            <p>Payment: ${order.paymentStatus || "N/A"}</p>
+
+            <p>Payment ID: ${order.paymentId || "N/A"}</p>
+
             <select
                 onchange="updateOrderStatus('${order._id}', this.value)">
 
@@ -1340,8 +1348,8 @@ function searchOrders() {
 
     const search =
         document.getElementById("order-search")
-        .value
-        .toLowerCase();
+            .value
+            .toLowerCase();
 
     const filtered =
         allOrders.filter(order =>
@@ -1470,16 +1478,71 @@ async function payNow() {
         order_id:
             order.id,
 
-        handler:
-            async function () {
+        handler: async function (response) {
 
-                await placeOrder();
+            const verifyResponse =
+                await fetch(
 
+                    "http://localhost:5000/api/payment/verify",
+
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                        body: JSON.stringify({
+
+                            razorpay_order_id:
+                                response.razorpay_order_id,
+
+                            razorpay_payment_id:
+                                response.razorpay_payment_id,
+
+                            razorpay_signature:
+                                response.razorpay_signature
+                        })
+                    }
+                );
+
+            const verifyData =
+                await verifyResponse.json();
+
+            if (verifyData.success) {
+
+                console.log(
+                    "Payment ID:",
+                    response.razorpay_payment_id
+                );
+
+                await placeOrder(
+                    response.razorpay_payment_id
+                );
+
+            } else {
+
+                alert(
+                    "Payment Verification Failed"
+                );
             }
+        }
     };
 
-    const razorpay =
-        new Razorpay(options);
+    const razorpay = new Razorpay(options);
+
+    razorpay.on(
+        "payment.failed",
+
+        function (response) {
+
+            alert("Payment Failed");
+
+            console.log(response.error);
+        }
+    );
 
     razorpay.open();
+
 }
