@@ -1087,3 +1087,31 @@ body {
 
     transition:0.3s;
 }
+
+.failed-box{
+
+    text-align:center;
+
+    margin-top:80px;
+}
+
+.failed-icon{
+
+    font-size:70px;
+
+    margin-bottom:20px;
+}
+
+.failed-box h2{
+
+    color:#ff4d4d;
+
+    margin-bottom:15px;
+}
+
+.failed-box button{
+
+    width:80%;
+
+    margin-top:15px;
+}

@@ -1478,6 +1478,28 @@ async function payNow() {
         order_id:
             order.id,
 
+        prefill: {
+
+            name: "Anuj Gupta",
+
+            email: "anuj321@gmail.com",
+
+            contact: "6798470141"
+        },
+
+
+        method: {
+
+            upi: true,
+
+            card: true,
+
+            netbanking: true,
+
+            wallet: true
+        },
+
+
         handler: async function (response) {
 
             const verifyResponse =
@@ -1532,14 +1554,19 @@ async function payNow() {
 
     const razorpay = new Razorpay(options);
 
-    razorpay.on(
-        "payment.failed",
+    razorpay.on("payment.failed",
 
         function (response) {
 
-            alert("Payment Failed");
-
             console.log(response.error);
+
+            hideAll();
+
+            document
+                .getElementById(
+                    "payment-failed-screen"
+                )
+                .classList.add("active");
         }
     );
 
