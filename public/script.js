@@ -6,6 +6,19 @@ let cart = [];
 
 let allOrders = [];
 
+// removeable 
+
+const user = localStorage.getItem("user");
+
+if (!user) {
+
+    hideAll();
+
+    document
+        .getElementById("login-screen")
+        .classList.add("active");
+}
+
 function openHome() {
 
     hideAll();
@@ -1386,4 +1399,87 @@ async function updateOrderStatus(orderId, status) {
 
         alert("Failed to update status");
     }
+}
+
+function logout() {
+
+    localStorage.removeItem("user");
+
+    localStorage.removeItem("token");
+
+    alert("Logged Out Successfully");
+
+    hideAll();
+
+    document
+        .getElementById("login-screen")
+        .classList.add("active");
+}
+
+async function payNow() {
+
+    const totalAmount =
+        cart.reduce(
+            (sum, item) =>
+                sum +
+                item.price * item.quantity,
+            0
+        );
+
+    const response =
+        await fetch(
+
+            "http://localhost:5000/api/payment/create-order",
+
+            {
+                method: "POST",
+
+                headers: {
+                    "Content-Type":
+                        "application/json"
+                },
+
+                body: JSON.stringify({
+
+                    amount:
+                        totalAmount
+                })
+            }
+        );
+
+    const order =
+        await response.json();
+
+    const options = {
+
+        key:
+            "rzp_test_SuDuOi0e8D3Aq9",
+
+        amount:
+            order.amount,
+
+        currency:
+            order.currency,
+
+        name:
+            "FoodieHub",
+
+        description:
+            "Food Order",
+
+        order_id:
+            order.id,
+
+        handler:
+            async function () {
+
+                await placeOrder();
+
+            }
+    };
+
+    const razorpay =
+        new Razorpay(options);
+
+    razorpay.open();
 }

@@ -276,8 +276,8 @@
                 <textarea id="customer-address" placeholder="Delivery Address">
         </textarea>
 
-                <button onclick="placeOrder()">
-                    Place Order
+                <button onclick="payNow()">
+                    Pay & Place Order
                 </button>
 
             </div>
@@ -288,13 +288,21 @@
 
         <!-- ================= PROFILE SCREEN ================= -->
 
+
+
         <section id="profile-screen" class="screen">
 
-            <button class="admin-btn" onclick="openAdminLogin()">
+            <div class="profile-top">
 
-                ⚙ Admin
+                <button class="admin-btn" onclick="openAdminLogin()">
+                    ⚙ Admin
+                </button>
 
-            </button>
+                <button class="logout-btn" onclick="logout()">
+                    Logout
+                </button>
+
+            </div>
 
             <div class="profile-box">
 
@@ -475,7 +483,12 @@
 
 
     <!-- JAVASCRIPT FILE -->
+
     <script src="script.js"></script>
+
+    <!-- RAZOPAY FILE -->
+
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
 </body>
 

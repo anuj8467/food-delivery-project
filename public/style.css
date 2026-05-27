@@ -277,7 +277,7 @@ body {
     justify-content: center;
     align-items: center;
     text-align: center;
-    padding: 30px;
+    padding: 90px;
     color: white;
     gap: 15px;
 }
@@ -1027,4 +1027,63 @@ body {
     background:#ff8c1a;
 
     color:white;
+}
+
+.profile-top{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    width:100%;
+
+    margin-bottom:30px;
+}
+
+.admin-btn{
+
+    background:#ff8c1a;
+
+    color:white;
+
+    border:none;
+
+    padding:10px 15px;
+
+    border-radius:10px;
+}
+
+.logout-btn{
+
+    position:absolute;
+
+    top:20px;
+
+    right:20px;
+
+    background:#ff4d4d;
+
+    color:white;
+
+    border:none;
+
+    padding:10px 15px;
+
+    border-radius:10px;
+    min-width:80px;
+    cursor: pointer;
+}
+
+#profile-screen{
+    position:relative;
+} 
+
+.admin-btn:hover,
+.logout-btn:hover{
+
+    transform:scale(1.05);
+
+    transition:0.3s;
 }

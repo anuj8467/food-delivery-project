@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
@@ -7,6 +8,9 @@ const cartRoutes = require("./routes/cart");
 const orderRoutes = require("./routes/order");
 const foodRoutes = require("./routes/food");
 const adminRoutes = require("./routes/admin");
+const paymentRoutes = require("./routes/payment");
+
+
 
 
 const app = express();
@@ -28,7 +32,7 @@ app.use("/api/cart", cartRoutes);
 app.use("/api/order", orderRoutes);
 app.use("/api/foods", foodRoutes);
 app.use("/api/admin",adminRoutes);
-
+app.use("/api/payment", paymentRoutes);
 
 
 
